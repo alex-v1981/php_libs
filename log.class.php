@@ -13,8 +13,11 @@ class Log
     {
         $line = date("d.m.Y H:i:s")."  ".$text."\n";
 
-        $f = fopen($this->filePath, "at");
-        fputs($f, $line);
-        fclose( $f );
+        $f = @fopen($this->filePath, "at");
+
+        if ( $f ) {
+            fputs($f, $line);
+            fclose($f);
+        }
     }
 }
