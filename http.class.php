@@ -28,6 +28,9 @@ class Http
         curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 
+        curl_setopt($ch, CURLOPT_COOKIEFILE, './cookie.txt');
+        curl_setopt($ch, CURLOPT_COOKIEJAR, './cookie.txt');
+
         if ( $this->referer )
             curl_setopt($ch, CURLOPT_HTTPHEADER, array("Referer: ".$this->referer));
 
