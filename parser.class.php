@@ -71,6 +71,9 @@ class Parser
 
     private function preparePattern( $pattern )
     {
-        return str_replace("/", "\\/", $pattern);
+        $pattern = str_replace("/", "\\/", $pattern);
+        $pattern = str_replace("|", "\\|", $pattern);
+
+        return $pattern;
     }
 }

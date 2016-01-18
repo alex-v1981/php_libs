@@ -8,6 +8,8 @@ class Http
     private $proxy;
     private $delayAfterQuery;
     private $userAgent;
+    private $rememberCookies = false;
+    private $headers = array();
     private $referer = false;
 
     function __construct($timeOut=30, $proxy=false, $delayAfterQuery=0, $userAgent=false)
@@ -28,11 +30,18 @@ class Http
         curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 
-        curl_setopt($ch, CURLOPT_COOKIEFILE, './cookie.txt');
-        curl_setopt($ch, CURLOPT_COOKIEJAR, './cookie.txt');
+        if ( $this->rememberCookies )
+        {
+            curl_setopt($ch, CURLOPT_COOKIEFILE, './cookie.txt');
+            curl_setopt($ch, CURLOPT_COOKIEJAR, './cookie.txt');
+        }
+
+        $headers = $this->headers;
 
         if ( $this->referer )
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array("Referer: ".$this->referer));
+            $headers = array_merge($headers, array("Referer: ".$this->referer));
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         if ( $this->proxy )
             curl_setopt($ch, CURLOPT_PROXY, $this->proxy);
@@ -49,6 +58,16 @@ class Http
             sleep( $this->delayAfterQuery );
 
         return $data;
+    }
+
+    public function setRememberCookies( $remeberCookies )
+    {
+        $this->rememberCookies = $remeberCookies;
+    }
+
+    public function setHeaders( $headers )
+    {
+        $this->headers = $headers;
     }
 
     public function setProxy( $proxy )
