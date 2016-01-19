@@ -9,7 +9,7 @@ class Parser
 
     public function parseElementWithPattern($text, $pattern, $index, $caseInsensitive=false)
     {
-        $pattern = '/'.$this->preparePattern( $pattern ).'/s';
+        $pattern = '/'.$pattern.'/s';
 
         if ( $caseInsensitive )
             $pattern .= 'i';
