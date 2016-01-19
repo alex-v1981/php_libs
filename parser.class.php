@@ -50,7 +50,7 @@ class Parser
 
     public function parseAllElementsWithPattern($text, $pattern, $caseInsensitive=false)
     {
-        $pattern = '/'.$this->preparePattern( $pattern ).'/s';
+        $pattern = '/'.$pattern.'/s';
 
         if ( $caseInsensitive )
             $pattern .= 'i';
