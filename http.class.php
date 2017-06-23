@@ -20,7 +20,7 @@ class Http
         $this->userAgent = $userAgent ? $userAgent : self::DEFAULT_USER_AGENT;
     }
 
-    private function initQuery( $url )
+    private function initQuery($url, $addHeaders=false)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -40,6 +40,9 @@ class Http
 
         if ( $this->referer )
             $headers = array_merge($headers, array("Referer: ".$this->referer));
+
+        if ($addHeaders)
+            $headers = array_merge($headers, $addHeaders);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -92,6 +95,18 @@ class Http
 
         if ( $params )
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+
+        return $this->getQueryResult( $ch );
+    }
+
+    public function postJson($url, $data)
+    {
+        $ch = $this->initQuery($url, array(
+            'Content-Type: application/json; charset=UTF-8',
+            'Content-Length: ' . strlen($data)
+        ));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
         return $this->getQueryResult( $ch );
     }

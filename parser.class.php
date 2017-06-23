@@ -76,7 +76,7 @@ class Parser
         $res = $this->parseAllElementsWithPattern($text, $pattern, $caseInsensitive);
 
         if ($res && $index < count($res))
-            return $res[$index];
+            return $res[$index][0];
 
         return false;
     }
