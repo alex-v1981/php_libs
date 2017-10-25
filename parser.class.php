@@ -7,24 +7,14 @@ class Parser
         ini_set("pcre.backtrack_limit", 10000000);
     }
 
-    public function parseElementWithPattern($text, $pattern, $caseInsensitive=false)
+    public function parseElementWithPattern($text, $pattern, $index=0, $caseInsensitive=false)
     {
         $pattern = '/'.$pattern.'/s';
 
-        if ( $caseInsensitive )
+        if ($caseInsensitive)
             $pattern .= 'i';
 
-        if ( preg_match($pattern, $text, $res) )
-            return $res;
-
-        return false;
-    }
-
-    public function parseElementWithPatternAndIndex($text, $pattern, $index, $caseInsensitive=false)
-    {
-        $res = $this->parseElementWithPattern($text, $pattern, $caseInsensitive);
-
-        if ($res && $index < count($res))
+        if (preg_match($pattern, $text, $res) && isset($res[$index]))
             return $res[$index];
 
         return false;
@@ -58,25 +48,15 @@ class Parser
         return false;
     }
 
-    public function parseAllElementsWithPattern($text, $pattern, $caseInsensitive=false)
+    public function parseAllElementsWithPattern($text, $pattern, $index=0, $caseInsensitive=false)
     {
         $pattern = '/'.$pattern.'/s';
 
-        if ( $caseInsensitive )
+        if ($caseInsensitive)
             $pattern .= 'i';
 
-        if ( preg_match_all($pattern, $text, $res) )
-            return $res;
-
-        return false;
-    }
-
-    public function parseAllElementsWithPatternAndIndex($text, $pattern, $index, $caseInsensitive=false)
-    {
-        $res = $this->parseAllElementsWithPattern($text, $pattern, $caseInsensitive);
-
-        if ($res && $index < count($res))
-            return $res[$index][0];
+        if (preg_match_all($pattern, $text, $res) && isset($res[$index]))
+            return $res[$index];
 
         return false;
     }
